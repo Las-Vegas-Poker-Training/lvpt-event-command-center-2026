@@ -2,47 +2,27 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { CircleDotDashed, Club, Dices, Layers3, Spade } from "lucide-react";
 
-type PackageKey = "standard" | "custom";
 type AddOn = { id: string; name: string; price: number; note: string };
 
-const packages: Record<PackageKey, { eyebrow: string; name: string; price: number; summary: string; includes: string[] }> = {
-  standard: {
-    eyebrow: "Turnkey production",
-    name: "Standard Everything",
-    price: 25840,
-    summary: "The full eight-table casino floor, professional dealers, championship poker experience and guest-ready chip racks—delivered as one polished, all-in production.",
-    includes: [
-      "8 casino tables with professional dealers",
-      "3 world-champion pros for the full four hours",
-      "2 hours of happy-hour training + 2 hours of live-play guidance",
-      "Standard felts, chips, cards and complete equipment",
-      "100 chip racks with $1,000 in starting chips per guest",
-      "Two-hour installation + two-hour strike",
-      "Pit management, team travel and event logistics",
-    ],
-  },
-  custom: {
-    eyebrow: "Signature brand experience",
-    name: "Custom Everything",
-    price: 28484,
-    summary: "Everything in the standard experience, elevated with a fully branded casino identity across the tables, cards and chips guests touch throughout the night.",
-    includes: [
-      "8 custom-felted casino tables with professional dealers",
-      "3 world-champion pros for the full four hours",
-      "2 hours of happy-hour training + 2 hours of live-play guidance",
-      "6,100 custom chips + 60 custom playing-card decks",
-      "100 chip racks with $1,000 in starting chips per guest",
-      "Two-hour installation + two-hour strike",
-      "Pit management, team travel and event logistics",
-    ],
-  },
-};
+const BASE_PRICE = 25820;
+
+const baseIncludes = [
+  "8 casino tables with professional dealers",
+  "3 world-champion poker pros for the full four hours",
+  "2 hours of happy-hour training + 2 hours of live-play guidance",
+  "Standard felts, cards, chips and complete gaming equipment",
+  "100 chip racks with $1,000 in starting chips per attendee",
+  "Two-hour installation + two-hour strike",
+  "Pit management, talent travel and event logistics",
+];
 
 const addOns: AddOn[] = [
-  { id: "felts", name: "Custom table felts", price: 6500, note: "Branded felts produced for all eight tables" },
-  { id: "chips", name: "6,100 custom casino chips", price: 5989, note: "Enough to begin each guest with a $1,000 chip rack" },
-  { id: "cards", name: "60 custom playing-card decks", price: 1950, note: "Covers poker, blackjack shoes and the complete casino floor" },
+  { id: "felts", name: "Custom Table Felts", price: 6500, note: "Branded felts produced for all eight tables" },
+  { id: "chips", name: "6,100 Custom Chips", price: 5989, note: "Enough to begin each guest with a $1,000 chip rack" },
+  { id: "cards", name: "60 PVC Custom Playing Card Decks", price: 1950, note: "Durable decks for poker, blackjack shoes and the complete casino floor" },
+  { id: "cases", name: "3 Custom Poker Chip Carrying Cases", price: 1200, note: "Required with custom chips for safe transport; each holds roughly 2,500–3,000 chips" },
 ];
 
 const games = [
@@ -50,12 +30,12 @@ const games = [
   { id: "blackjack", name: "Two blackjack tables", label: "Fast + familiar", copy: "Easy to understand and effortless to join. Professional dealers keep the pace lively for guests who want quick, social rounds." },
   { id: "craps", name: "One craps table", label: "The energy center", copy: "The most naturally social table on the floor—built for cheering, celebration and group momentum." },
   { id: "roulette", name: "One roulette table", label: "The visual anchor", copy: "Simple, cinematic and immediately inviting, with broad appeal across every experience level." },
-  { id: "social", name: "Casino War or 3-Card Monte", label: "Pure entertainment", copy: "A fun, approachable choice for guests who are not big gamblers—quick to learn, easy to watch and designed to keep the room smiling." },
+  { id: "social", name: "Casino War or 3-Card Monte", label: "Pure entertainment", copy: "A straight-up, easy-to-join game for guests who are not big gamblers—quick to learn, fun to play and built to keep the room smiling." },
 ];
 
 const pros = [
   { name: "Kenna James", badge: "Poker legend", image: "/assets/kenna-james.webp", stat: "$4M+ live earnings", copy: "A magnetic coach and speaker who makes strategy, psychology and table reads immediately accessible." },
-  { name: "Jeff Madsen", badge: "4× WSOP bracelet winner", image: "/assets/jeff-madsen.webp", stat: "WSOP Player of the Year", copy: "Elite tournament instincts, sharp analysis and a rare ability to make high-level concepts genuinely fun." },
+  { name: "Jeff Madsen", badge: "5× WSOP bracelet winner", image: "/assets/jeff-madsen.webp", stat: "$7.48M+ live earnings", copy: "Elite tournament instincts, sharp analysis and a rare ability to make high-level concepts genuinely fun." },
   { name: "Taylor Black", badge: "2021 WPT champion", image: "/assets/taylor-black.webp", stat: "$5M+ live earnings", copy: "Modern, disciplined and composed—Taylor connects pressure decisions to real-world performance." },
 ];
 
@@ -76,8 +56,8 @@ const gallery = [
 const faqs = [
   { q: "Do guests need poker or casino experience?", a: "Not at all. Every station is designed for mixed experience levels. Dealers keep the games approachable, while the pros can meet complete beginners and experienced players at the same table." },
   { q: "How does the happy-hour Poker Lab work?", a: "For the first two hours, all three poker tables are casual drop-in training experiences. Guests can learn a few hands, mingle and return whenever they like. For the final two hours, the tables shift into real gameplay while all three pros float the room, offer live advice and help players build confidence." },
-  { q: "How does Casino War or 3-Card Monte fit the floor?", a: "It gives non-gamblers an immediate, entertaining entry point. Casino War is familiar and fast; 3-Card Monte can be presented as an entertainment-only close-up illusion with controlled winner rounds and optional prize entries. The final selection can be confirmed with the venue plan." },
-  { q: "What is included in each guest's chip rack?", a: "Both proposal options include 100 chip racks. Each attendee can begin the evening with $1,000 in play chips, keeping the experience organized as guests move from table to table." },
+  { q: "How does Casino War or 3-Card Monte fit the floor?", a: "It gives non-gamblers an immediate, entertaining entry point. Both games are fast, approachable and easy to join, making the station a lively social option throughout the night. The final selection can be confirmed with the venue plan." },
+  { q: "What is included in each guest's chip rack?", a: "The base experience includes 100 chip racks. Each attendee can begin the evening with $1,000 in play chips, keeping the experience organized as guests move from table to table." },
   { q: "What does the venue need to provide?", a: "A ballroom or event area with an approved floor plan, normal service access and adequate setup time. Once the venue is selected, LVPT coordinates load-in, placement and operational details directly with the property." },
   { q: "Are food and beverage included?", a: "Food and beverage remain with the selected Dallas venue, as requested. We will design the gaming footprint so service paths, bars and guest circulation continue to work smoothly." },
 ];
@@ -89,48 +69,43 @@ function scrollToId(id: string) {
 }
 
 function GameIcon({ name }: { name: string }) {
-  const shared = { className: "game-icon", width: 34, height: 34, viewBox: "0 0 34 34", fill: "none", xmlns: "http://www.w3.org/2000/svg", "aria-hidden": true };
-  if (name === "poker") return <svg {...shared}><rect x="5" y="8" width="16" height="21" rx="3" transform="rotate(-10 5 8)" /><rect x="13" y="5" width="16" height="21" rx="3" transform="rotate(9 13 5)" /><path d="M20 11.5c-3.2 3.3-5 5-5 7.1 0 1.7 1.3 3 3 3 1.1 0 2-.5 2.6-1.2-.1 1.4-.5 2.6-1.4 3.6h5.6c-.9-1-1.3-2.2-1.4-3.6.6.7 1.5 1.2 2.6 1.2 1.7 0 3-1.3 3-3 0-2.1-1.8-3.8-5-7.1Z" /></svg>;
-  if (name === "blackjack") return <svg {...shared}><rect x="4" y="6" width="17" height="23" rx="3" /><path d="M9 12h7M12.5 9v6" /><rect x="14" y="4" width="16" height="22" rx="3" /><path d="M19 10h6M22 7v6" /></svg>;
-  if (name === "craps") return <svg {...shared}><rect x="4" y="7" width="18" height="18" rx="4" transform="rotate(-9 4 7)" /><circle cx="10" cy="13" r="1.5" /><circle cx="16" cy="19" r="1.5" /><rect x="15" y="9" width="15" height="17" rx="4" transform="rotate(9 15 9)" /><circle cx="21" cy="14" r="1.4" /><circle cx="25" cy="18" r="1.4" /><circle cx="21" cy="22" r="1.4" /></svg>;
-  if (name === "roulette") return <svg {...shared}><circle cx="17" cy="17" r="13" /><circle cx="17" cy="17" r="5" /><path d="M17 4v8M17 22v8M4 17h8M22 17h8M7.8 7.8l5.7 5.7M20.5 20.5l5.7 5.7M26.2 7.8l-5.7 5.7M13.5 20.5l-5.7 5.7" /></svg>;
-  return <svg {...shared}><path d="M5 25 9 8l15 4-4 17Z" /><path d="m13 24 3-18 14 3-3 18" /><path d="m21 15 2.3-2.3 2.3 2.3-2.3 2.3Z" /><path d="M7 5h4M9 3v4M27 29h3M28.5 27.5v3" /></svg>;
+  const shared = { className: "game-icon", size: 31, strokeWidth: 1.65, "aria-hidden": true };
+  if (name === "poker") return <Spade {...shared} />;
+  if (name === "blackjack") return <Club {...shared} />;
+  if (name === "craps") return <Dices {...shared} />;
+  if (name === "roulette") return <CircleDotDashed {...shared} />;
+  return <Layers3 {...shared} />;
 }
 
 export default function Home() {
-  const [selectedPackage, setSelectedPackage] = useState<PackageKey>("custom");
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const total = useMemo(() => packages[selectedPackage].price + addOns.filter((item) => selectedAddOns.includes(item.id)).reduce((sum, item) => sum + item.price, 0), [selectedAddOns, selectedPackage]);
+  const total = useMemo(() => BASE_PRICE + addOns.filter((item) => selectedAddOns.includes(item.id)).reduce((sum, item) => sum + item.price, 0), [selectedAddOns]);
   const chosenAddOns = addOns.filter((item) => selectedAddOns.includes(item.id));
-  const selected = packages[selectedPackage];
 
   const mailto = useMemo(() => {
     const extras = chosenAddOns.length ? chosenAddOns.map((item) => item.name).join(", ") : "None selected";
     const subject = encodeURIComponent("Applied Digital — Casino Night Direction");
-    const body = encodeURIComponent(`Hi Matt,\n\nWe would like to move forward with: ${selected.name}.\nSelected enhancements: ${extras}.\nCurrent proposal total: ${money.format(total)}.\n\nPlease send the agreement and next steps.\n`);
+    const body = encodeURIComponent(`Hi Matt,\n\nWe would like to move forward with the Applied Digital Casino Night base experience at ${money.format(BASE_PRICE)}.\n\nSelected experience upgrades: ${extras}.\nCurrent proposal total: ${money.format(total)}.\n\nPlease send the agreement and next steps.\n`);
     return `mailto:book@pokertraininglasvegas.com?subject=${subject}&body=${body}`;
-  }, [chosenAddOns, selected.name, total]);
+  }, [chosenAddOns, total]);
 
   useEffect(() => {
     const restoreSelection = window.setTimeout(() => {
-      const savedPackage = window.localStorage.getItem("applied-digital-package-v2") as PackageKey | null;
-      const savedAddOns = window.localStorage.getItem("applied-digital-addons-v2");
-      if (savedPackage && packages[savedPackage]) setSelectedPackage(savedPackage);
+      const savedAddOns = window.localStorage.getItem("applied-digital-addons-v3");
       if (savedAddOns) {
         try { setSelectedAddOns(JSON.parse(savedAddOns)); }
-        catch { window.localStorage.removeItem("applied-digital-addons-v2"); }
+        catch { window.localStorage.removeItem("applied-digital-addons-v3"); }
       }
     }, 0);
     return () => window.clearTimeout(restoreSelection);
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem("applied-digital-package-v2", selectedPackage);
-    window.localStorage.setItem("applied-digital-addons-v2", JSON.stringify(selectedAddOns));
-  }, [selectedAddOns, selectedPackage]);
+    window.localStorage.setItem("applied-digital-addons-v3", JSON.stringify(selectedAddOns));
+  }, [selectedAddOns]);
 
   useEffect(() => {
     let context: { revert: () => void } | undefined;
@@ -176,13 +151,15 @@ export default function Home() {
   }, [lightboxIndex]);
 
   function toggleAddOn(id: string) {
-    if (selectedPackage === "custom") return;
-    setSelectedAddOns((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
-  }
-
-  function choosePackage(key: PackageKey) {
-    setSelectedPackage(key);
-    if (key === "custom") setSelectedAddOns([]);
+    setSelectedAddOns((current) => {
+      if (id === "cases" && current.includes("chips")) return current;
+      if (current.includes(id)) {
+        if (id === "chips") return current.filter((item) => item !== "chips" && item !== "cases");
+        return current.filter((item) => item !== id);
+      }
+      if (id === "chips") return [...current.filter((item) => item !== "cases"), "chips", "cases"];
+      return [...current, id];
+    });
   }
 
   function closeMenuAndScroll(id: string) {
@@ -274,14 +251,14 @@ export default function Home() {
       <section className="investment-section section-pad" id="investment">
         <div className="orb orb-two" aria-hidden="true" />
         <div className="shell">
-          <div className="investment-head" data-reveal><p className="section-label">Choose your experience</p><h2>One room.<br /><em>Two levels of finish.</em></h2><p>Both options include the same eight-table floor, full poker training experience, championship pros, professional dealers and 100 chip racks. The difference is the brand layer. Food, beverage, venue and prizes remain separate.</p></div>
-          <div className="package-grid">{(Object.keys(packages) as PackageKey[]).map((key) => { const item = packages[key]; const active = selectedPackage === key; return <button className={`package-card ${active ? "is-selected" : ""}`} key={key} onClick={() => choosePackage(key)} aria-pressed={active}><span className="selection-dot"><i /></span><p>{item.eyebrow}</p><h3>{item.name}</h3><strong>{money.format(item.price)}</strong><small>all-in event investment</small><span className="package-summary">{item.summary}</span><ul>{item.includes.map((detail) => <li key={detail}>{detail}</li>)}</ul><b>{active ? "Selected" : "Select experience"}<i>→</i></b></button>; })}</div>
-          <div className="enhancement-wrap" data-reveal><div className="enhancement-intro"><p className="section-label">À-la-carte customization</p><h3>Add the Applied Digital layer.</h3><span>{selectedPackage === "custom" ? "Every custom element below is already included in Custom Everything." : "Add any custom element to Standard Everything and watch the total update."}</span><div className="rack-included"><span>Included in both packages</span><strong>100 chip racks · $700 value</strong><p>Each attendee begins with $1,000 in chips—organized, portable and ready for the next table.</p></div></div><div className="enhancement-list">{addOns.map((item) => { const active = selectedAddOns.includes(item.id); const included = selectedPackage === "custom"; return <button key={item.id} className={`${active ? "is-selected" : ""} ${included ? "is-included" : ""}`} onClick={() => toggleAddOn(item.id)} role="checkbox" aria-checked={active || included} disabled={included}><span className="check-box">{active || included ? "✓" : "+"}</span><span><strong>{item.name}</strong><small>{item.note}</small></span><b>{included ? "Included" : `+${money.format(item.price)}`}</b></button>; })}<div className="case-note"><span>Chip carrying cases</span><p>Each holds roughly 2,500–3,000 chips and can support a 100–200 chip giveaway. Final quantity is priced once the takeaway plan is selected.</p></div></div></div>
-          <div className="proposal-total" data-reveal><div><p>Current proposal</p><h3>{selected.name}</h3><span>{selectedPackage === "custom" ? "Complete custom production package" : chosenAddOns.length ? `${chosenAddOns.length} à-la-carte customization${chosenAddOns.length === 1 ? "" : "s"} selected` : "Complete standard production package"}</span></div><div className="total-number"><span>Event investment</span><strong>{money.format(total)}</strong><small>Applicable taxes, venue charges, prizes and optional chip carrying cases are not included.</small></div><div className="total-actions"><a className="primary-button" href={mailto}><span>Approve this direction</span><i>↗</i></a><button className="print-button" onClick={() => window.print()}>Print / save proposal</button></div></div>
+          <div className="investment-head" data-reveal><p className="section-label">Your complete experience</p><h2>One clear base.<br /><em>Endless ways to elevate.</em></h2><p>The complete eight-table casino floor, four-hour Poker Lab, championship pros, professional dealers and guest-ready chip racks are already built in. Add only the custom brand elements you want. Food, beverage, venue and prizes remain separate.</p></div>
+          <article className="base-package-card" data-reveal><div className="base-package-lead"><p>Applied Digital Casino Night</p><h3>The complete experience</h3><strong>{money.format(BASE_PRICE)}</strong><small>base event investment</small><span>One polished, turnkey production for approximately 100 guests—built for four hours of fluid, come-and-go play.</span></div><div className="base-package-includes"><p>Everything already included</p><ul>{baseIncludes.map((detail) => <li key={detail}>{detail}</li>)}</ul></div></article>
+          <div className="enhancement-wrap" data-reveal><div className="enhancement-intro"><p className="section-label">À-la-carte upgrades</p><h3>Add the Applied Digital layer.</h3><span>Select any custom element below and the live proposal total will update instantly.</span><div className="rack-included"><span>Included in the base experience</span><strong>100 chip racks · $700 value</strong><p>Each attendee begins with $1,000 in chips—organized, portable and ready for the next table.</p></div></div><div className="enhancement-list">{addOns.map((item) => { const active = selectedAddOns.includes(item.id); const required = item.id === "cases" && selectedAddOns.includes("chips"); return <button key={item.id} className={`${active ? "is-selected" : ""} ${required ? "is-required" : ""}`} onClick={() => toggleAddOn(item.id)} role="checkbox" aria-checked={active} aria-disabled={required}><span className="check-box">{active ? "✓" : "+"}</span><span><strong>{item.name}</strong><small>{item.note}</small></span><b>{required ? `Required · +${money.format(item.price)}` : `+${money.format(item.price)}`}</b></button>; })}</div></div>
+          <div className="proposal-total" data-reveal><div><p>Current proposal</p><h3>Applied Digital Casino Night</h3><span>{chosenAddOns.length ? `${chosenAddOns.length} experience upgrade${chosenAddOns.length === 1 ? "" : "s"} selected` : "Complete base experience"}</span></div><div className="total-number"><span>Event investment</span><strong>{money.format(total)}</strong><small>Applicable taxes, venue charges, food, beverage and prizes are not included.</small></div><div className="total-actions"><a className="primary-button" href={mailto}><span>Email selected direction</span><i>↗</i></a><button className="print-button" onClick={() => window.print()}>Print / save proposal</button></div></div>
         </div>
       </section>
 
-      <section className="next-section section-pad"><div className="shell next-grid"><div data-reveal><p className="section-label">What happens next</p><h2>A clear path.<br /><em>Then we build.</em></h2></div><div className="next-list" data-reveal><div className="next-item"><span className="next-cue">Choose</span><div><strong>Select the finish</strong><p>Choose Standard Everything or Custom Everything; poker training is included either way.</p></div></div><div className="next-item"><span className="next-cue">Confirm</span><div><strong>Lock the Dallas venue</strong><p>We review load-in, room dimensions and the final operating footprint.</p></div></div><div className="next-item"><span className="next-cue">Create</span><div><strong>Share prizes + brand assets</strong><p>Decide on drawings, highest-chip recognition and any custom production.</p></div></div><div className="next-item"><span className="next-cue">Reserve</span><div><strong>Secure December 17</strong><p>A 50% retainer secures production and talent; the balance is due 30 days before the event.</p></div></div></div></div></section>
+      <section className="next-section section-pad"><div className="shell"><div className="next-grid"><div data-reveal><p className="section-label">What happens next</p><h2>A clear path.<br /><em>Then we build.</em></h2></div><div className="next-list" data-reveal><div className="next-item"><span className="next-cue">Choose</span><div><strong>Select any experience upgrades</strong><p>The complete base experience is set; add only the custom felts, chips, cards or carrying cases you want.</p></div></div><div className="next-item"><span className="next-cue">Confirm</span><div><strong>Lock the Dallas venue</strong><p>We review load-in, room dimensions and the final operating footprint.</p></div></div><div className="next-item"><span className="next-cue">Create</span><div><strong>Share prizes + brand assets</strong><p>Decide on drawings, highest-chip recognition and any custom production.</p></div></div><div className="next-item"><span className="next-cue">Reserve</span><div><strong>Secure December 17</strong><p>A 50% retainer secures production and talent; the balance is due 30 days before the event.</p></div></div></div></div><div className="next-contact" data-reveal><div><span>Ready when you are</span><strong>Your current selections are ready to send.</strong></div><div><a className="contact-call" href="tel:+16167457148">Call Matt <span>616-745-7148</span></a><a className="contact-email" href={mailto}>Email selected options <span>↗</span></a></div></div></div></section>
 
       <section className="faq-section section-pad"><div className="shell faq-grid"><div data-reveal><p className="section-label">Useful answers</p><h2>Before<br /><em>the next call.</em></h2></div><div className="faq-list" data-reveal>{faqs.map((item, index) => <details key={item.q} open={index === 0}><summary>{item.q}<span>+</span></summary><div><p>{item.a}</p></div></details>)}</div></div></section>
 
