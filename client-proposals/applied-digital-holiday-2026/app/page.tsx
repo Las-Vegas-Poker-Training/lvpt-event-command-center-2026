@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import { CircleDotDashed, Club, Dices, Layers3, Spade } from "lucide-react";
+import { CircleDotDashed, Club, Coins, Crosshair, Dices, Gift, Layers3, Spade } from "lucide-react";
 
 type AddOn = { id: string; name: string; price: number; note: string };
 
@@ -210,7 +210,6 @@ export default function Home() {
           <div className="hero-actions hero-reveal"><button className="primary-button magnetic" onClick={() => scrollToId("experience")}><span>Enter the experience</span><i>↘</i></button><button className="text-button" onClick={() => scrollToId("investment")}>View investment <span>→</span></button></div>
           <div className="hero-facts"><div className="hero-fact"><span>Date</span><strong>DEC 17 · 2026</strong></div><div className="hero-fact"><span>Live experience</span><strong>6:00 — 10:00 PM</strong></div><div className="hero-fact"><span>Guest profile</span><strong>≈ 100 · COME & GO</strong></div><div className="hero-fact"><span>Environment</span><strong>DALLAS · VENUE TBD</strong></div></div>
         </div>
-        <div className="scroll-cue" aria-hidden="true"><span>Scroll to initialize</span><i /></div>
       </section>
 
       <section className="manifesto section-pad" id="experience">
@@ -232,8 +231,21 @@ export default function Home() {
         <div className="shell">
           <div className="lab-intro" data-reveal><p className="section-label">The live Poker Lab</p><h2>AI trains on data.<br /><em>People train on decisions.</em></h2><p>For two hours, all three poker tables run as relaxed, happy-hour-style training labs: guests drop in, learn a few hands, ask questions and move naturally between poker and conversation. For the final two hours, the tables shift into real gameplay while the pros float, offer live advice and reinforce the decisions that build confidence.</p></div>
           <div className="lab-sequence" data-reveal><div><span className="sequence-icon">♠</span><strong>Drop in</strong><p>No lecture and no prerequisite—join for a hand or stay for a round.</p></div><i>→</i><div><span className="sequence-icon">◇</span><strong>Think aloud</strong><p>The pro reveals the logic, psychology and risk inside the decision.</p></div><i>→</i><div><span className="sequence-icon">↗</span><strong>Play for real</strong><p>The room shifts into open gameplay for the second half of the night.</p></div><i>→</i><div><span className="sequence-icon">✦</span><strong>Build confidence</strong><p>Pros float the tables with timely advice, encouragement and sharper lines.</p></div></div>
+          <div className="hand-analysis-callout" data-reveal><span className="pulse-dot" /><p><strong>Hand Analysis.</strong> During a live hand, a pro pauses the action at key decision points and walks the table through position, hand strength, bet sizing, pot odds and opponent behavior. Players share what they are considering, the pro compares the available options and explains the logic, then play resumes—turning each hand into an immediate, practical lesson.</p></div>
           <div className="pro-grid">{pros.map((pro) => <article className="pro-card" key={pro.name} onPointerMove={handleDepth} onPointerLeave={resetDepth}><div className="pro-image-wrap"><Image src={pro.image} alt={`${pro.name}, ${pro.badge}`} fill sizes="(max-width: 820px) 100vw, 33vw" /><span className="pro-badge">{pro.badge}</span></div><div className="pro-content"><p>{pro.stat}</p><h3>{pro.name}</h3><span>{pro.copy}</span></div></article>)}</div>
           <p className="roster-note">Featured championship roster. Final talent is confirmed at booking.</p>
+        </div>
+      </section>
+
+      <section className="prize-options-section section-pad">
+        <div className="shell">
+          <div className="section-head" data-reveal><div><p className="section-label">Three ways to play your winnings</p><h2>Do more than count the chips.<br /><em>Turn them into a finale.</em></h2></div><p>Instead of simply counting stacks or turning chips in, Applied Digital can choose one of three fun prize formats that gives every chip added meaning and keeps the energy building through the end of the night.</p></div>
+          <div className="prize-grid">
+            <article className="game-card prize-card"><div className="game-top"><span className="game-icon-wrap"><Coins className="game-icon" size={31} strokeWidth={1.65} aria-hidden /></span><span className="game-label">The finale</span></div><h3>The Live “Bankroll” Auction</h3><p>Close the tables at the 3.5-hour mark and use the final 30 minutes for a fast-paced live auction. Players use their remaining chips as bidding currency to compete for prizes—so every pot won during the night creates more purchasing power when the auction begins.</p></article>
+            <article className="game-card prize-card"><div className="game-top"><span className="game-icon-wrap"><Crosshair className="game-icon" size={31} strokeWidth={1.65} aria-hidden /></span><span className="game-label">The chase</span></div><h3>The VIP “Bounty” Board</h3><p>Turn selected executives or VIP guests into high-value targets by placing a chip bounty on each one. Players who win a qualifying hand against a featured VIP collect the bounty, creating friendly rivalry, natural networking and a reason to move throughout the room.</p></article>
+            <article className="game-card prize-card"><div className="game-top"><span className="game-icon-wrap"><Gift className="game-icon" size={31} strokeWidth={1.65} aria-hidden /></span><span className="game-label">The wildcard</span></div><h3>The “What’s in the Box?” Exchange</h3><p>At any point during the night, players can trade a set amount of chips for a sealed Mystery Box. Inside could be a premium grand prize, a solid mid-tier reward or an absolute gag gift. Once a box is opened, the gamble is complete—and the reveal becomes part of the entertainment.</p></article>
+          </div>
+          <div className="floor-note" data-reveal><span className="pulse-dot" /><p><strong>One night. Three possible prize experiences.</strong> Select one format as the featured finale, or combine bounties and Mystery Boxes with the Bankroll Auction for an even more interactive experience. Prizes are selected and provided by Applied Digital.</p></div>
         </div>
       </section>
 
